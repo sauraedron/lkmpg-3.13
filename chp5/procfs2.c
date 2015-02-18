@@ -6,9 +6,12 @@
 #define PROCFS_NAME "bufferlink"
 
 static struct proc_dir_entry *opf;
-
+int procfile_write(struct file *file, const char *buffer, unsigned long count, void *data);
+int procfile_read(char *buffer, char **bufferlocation, off_t offset, int buffer_length, int *eof, void *data);
 static struct file_operations fops =	{
-	.owner = THIS_MODULE
+	.owner = THIS_MODULE,
+	.write = procfile_write,
+	.read = procfile_read
 };
 static char procfs_buffer[PROCFS_MAX_SIZE];
 
@@ -29,6 +32,7 @@ return ret;
 }
 int procfile_write(struct file *file, const char *buffer, unsigned long count, void *data)
 {
+	buffer = "AYO";
 	procfs_buffer_size = count;
 	/* get buffer size */
 	if(procfs_buffer_size > PROCFS_MAX_SIZE)
